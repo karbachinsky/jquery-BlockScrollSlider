@@ -45,7 +45,6 @@
         });
     }
 
-
     /**
      * Activates slide corresponding to certain scroll position
      * @param {Number} pos
