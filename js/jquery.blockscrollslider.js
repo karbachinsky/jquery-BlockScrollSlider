@@ -104,9 +104,8 @@
     BlockScrollSlider.prototype._createWrapper = function() {
         var self = this;
 
-        var wrapperClass = "." + self.params.wrapperClass;
-        self.$slides.wrapAll("<div class=\"" + wrapperClass + "\"></div>");
-        $(wrapperClass).css({
+        self.$slides.wrapAll("<div class=\"" + self.params.wrapperClass + "\"></div>");
+        $("." + self.params.wrapperClass).css({
             height: self.slidesAbsPositions[self.slidesCnt-1] + "px"
         });
 
