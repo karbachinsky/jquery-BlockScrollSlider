@@ -24,6 +24,7 @@
         self.slidesAbsPositions = [];
         self.initialZIndex = 100;
         self.slidesCnt = self.$slides.length;
+        self.totalHeight = 0;
 
         self.params = {
             wrapperClass: 'slide-wrapper',
@@ -41,9 +42,12 @@
             self.slidesArray.push($(this));
             self.slidesHeights.push($(this).height());
 
-            sum += $(this).height();
             self.slidesAbsPositions.push(sum);
+
+            sum += $(this).height();
         });
+
+        self.totalHeight = sum;
 
         self._createWrapper();
         self._activateSlide($(window).scrollTop());
@@ -65,16 +69,16 @@
     BlockScrollSlider.prototype._activateSlide = function(pos) {
         var self = this;
 
-        var i;
-        for (var j=0; j<self.slidesCnt; ++j) {
-            if (pos < self.slidesAbsPositions[j]) {
-                i = j;
+        if (pos > self.totalHeight)
+            return;
+
+        var i = self.slidesCnt - 1;
+        for (var j=1; j<self.slidesCnt; ++j) {
+            if (pos <= self.slidesAbsPositions[j]) {
+                i = j-1;
                 break;
             }
         }
-
-        if (i == null)
-            return;
 
         if (i != self.currentSlideIndex) {
             self.params.changeSlideCallback(self.slidesArray[i]);
@@ -85,7 +89,7 @@
             if (j <= i) {
                 self.slidesArray[j].css({
                     position: "absolute",
-                    top: ( j > 0 ? self.slidesAbsPositions[j-1] : 0 ) + "px"
+                    top: self.slidesAbsPositions[j] + "px"
                 });
             }
             else {
@@ -106,13 +110,36 @@
 
         self.$slides.wrapAll("<div class=\"" + self.params.wrapperClass + "\"></div>");
         $("." + self.params.wrapperClass).css({
-            height: self.slidesAbsPositions[self.slidesCnt-1] + "px"
+            height: self.totalHeight + "px"
         });
 
     };
 
     /**
+     * Scrolls to certain slider identified by number
+     * @param {Number} i
+     * @return
+     */
+    BlockScrollSlider.prototype.scrollTo = function(i) {
+        var self = this;
+
+        $(window).scrollTop(self.slidesAbsPositions[ i ]);
+    };
+
+    /**
+     * Get slide by index
+     * @param {Number} i
+     * @return
+     */
+    BlockScrollSlider.prototype.getSlide = function(i) {
+        var self = this;
+
+        return self.slidesArray[i];
+    };
+
+    /**
      * Wrapper for JQuery
+     * @param {Objeet} params
      * @return BlockScrollSlider object
      */
     $.fn.blockScrollSlider = function(params) {
