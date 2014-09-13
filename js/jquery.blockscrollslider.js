@@ -10,22 +10,34 @@
 
     /**
      * Initialize
-     * @param {Jquery selector} slides
+     * @param {Jquery selector | object} slides
      * @return
      */
-    function BlockScrollSlider(slides) {
+    function BlockScrollSlider(slides, params) {
         var self = this;
 
         self.$slides = slides;
+
+        self.currentSlide = null;
         self.slidesArray = [];
         self.slidesHeights = [];
         self.slidesAbsPositions = [];
         self.initialZIndex = 100;
         self.slidesCnt = self.$slides.length;
 
+        self.params = {
+            wrapperClass: 'slide-wrapper',
+            initialZIndex: 100,
+            changeSlideCallback: function(currentSlide) {}
+        };
+
+        if("object" == typeof(params)) {
+            $.extend(self.params, params);
+        }
+
         var sum = 0, i = 0;
         self.$slides.each(function() {
-            $(this).css({ 'z-index': self.initialZIndex + self.$slides.length - i++ });
+            $(this).css({ 'z-index': self.params.initialZIndex + self.$slides.length - i++ });
             self.slidesArray.push($(this));
             self.slidesHeights.push($(this).height());
 
@@ -64,6 +76,11 @@
         if (i == null)
             return;
 
+        if (i != self.currentSlideIndex) {
+            self.params.changeSlideCallback(self.slidesArray[i]);
+            self.currentSlideIndex = i;
+        }
+
         for (var j=0; j<self.slidesCnt; ++j) {
             if (j <= i) {
                 self.slidesArray[j].css({
@@ -87,8 +104,9 @@
     BlockScrollSlider.prototype._createWrapper = function() {
         var self = this;
 
-        self.$slides.wrapAll("<div class=\"slide-wrapper\"></div>");
-        $(".slide-wrapper").css({
+        var wrapperClass = "." + self.params.wrapperClass;
+        self.$slides.wrapAll("<div class=\"" + wrapperClass + "\"></div>");
+        $(wrapperClass).css({
             height: self.slidesAbsPositions[self.slidesCnt-1] + "px"
         });
 
@@ -98,8 +116,8 @@
      * Wrapper for JQuery
      * @return BlockScrollSlider object
      */
-    $.fn.blockScrollSlider = function() {
-        return new BlockScrollSlider(this);
+    $.fn.blockScrollSlider = function(params) {
+        return new BlockScrollSlider(this, params);
     };
 
 })(jQuery);

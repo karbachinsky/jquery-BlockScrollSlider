@@ -21,4 +21,19 @@ $(function() {
 });    
 ```
 
-Profit!
+Or 
+
+```javascript
+$(function() {
+    $('.slide').blockScrollSlider({
+        changeSlideCallback: function(slide) {        
+            console.log('Slide changed!');
+        }
+    });
+});    
+```
+Also you can specify additional params:
+** initialZIndex
+** wrapperClass
+** changeSlideCallback
+
