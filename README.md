@@ -41,7 +41,7 @@ Also you can specify additional params:
    - wrapperClass
    - changeSlideCallback
 
-Therea a fiew public methods you can call:
+There are several public methods you can call:
 ```javascript
 slider.getSlide(index);
 slider.scrollTo(index);

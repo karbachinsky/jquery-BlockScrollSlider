@@ -74,7 +74,7 @@
 
         var i = self.slidesCnt - 1;
         for (var j=1; j<self.slidesCnt; ++j) {
-            if (pos <= self.slidesAbsPositions[j]) {
+            if (pos < self.slidesAbsPositions[j]) {
                 i = j-1;
                 break;
             }
