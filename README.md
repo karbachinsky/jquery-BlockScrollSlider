@@ -1,4 +1,7 @@
-cal block slider on scroll event in parallax style.
+jquery-BlockScrollSlider
+========================
+
+Jquery vertical block slider on scroll event in parallax style.
 
 
 ##HOWTO
@@ -38,7 +41,7 @@ Also you can specify additional params:
    - wrapperClass
    - changeSlideCallback
 
-Therea a fiew publick methods you can call:
+Therea a fiew public methods you can call:
 ```javascript
 slider.getSlide(index);
 slider.scrollTo(index);
