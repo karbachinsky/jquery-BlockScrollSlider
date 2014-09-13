@@ -32,8 +32,5 @@ $(function() {
     });
 });    
 ```
-Also you can specify additional params:
-** initialZIndex
-** wrapperClass
-** changeSlideCallback
+Also you can specify additional params: initialZIndex, wrapperClass, changeSlideCallback
 
